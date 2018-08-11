@@ -5,9 +5,10 @@ import * as mongoose from 'mongoose'
 mongoose.connect(process.env.MONGO, { useNewUrlParser: true })
 
 // Get models
-import { getUser } from './user'
+import { getUser, getLeaderBalance } from './user'
 
 // Export models
 export {
   getUser,
+  getLeaderBalance,
 }

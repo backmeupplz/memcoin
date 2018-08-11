@@ -5,6 +5,7 @@ dotenv.config({ path: `${__dirname}/../.env` })
 import { Telegraf, ContextMessageUpdate } from 'telegraf'
 const telegraf = require('telegraf')
 import { setupHelp } from './commands/help'
+import { setupLeaderBoard } from './commands/leaderboard'
 import { setupBalance } from './commands/balance'
 import { setupTransfer } from './helpers/transfer'
 
@@ -16,4 +17,5 @@ bot.startPolling()
 setupTransfer(bot)
 // Setup help command
 setupHelp(bot)
+setupLeaderBoard(bot)
 setupBalance(bot)
