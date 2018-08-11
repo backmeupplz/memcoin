@@ -1,35 +1,34 @@
 // Dependencies
 import { Telegraf, ContextMessageUpdate } from 'telegraf'
-import { User } from '../models/user';
-import { getLeaderBalance } from '../models'
+import { User } from '../models/user'
+import { getLeaderboard } from '../models'
 import { getName } from '../helpers/name'
 
-interface UserForLeaderBoard {
-    username: String,
-    balance: Number,
+interface LeaderBoardUser {
+  string: String,
+  number: Number,
 }
 
-const getUser = async (ctx: any, user: User): Promise<UserForLeaderBoard> => {
-    const member = await ctx.telegram.getChatMember(user.chatId, user.chatId);
-    return {
-        username: getName(member),
-        balance: user.balance,
-    };
+async function getUser(ctx: any, user: User): Promise<LeaderBoardUser> {
+  const member = await ctx.telegram.getChatMember(user.chatId, user.chatId)
+  return {
+    string: getName(member),
+    number: user.balance,
+  }
 }
 
 // Help commands
 export function setupLeaderBoard(bot: Telegraf<ContextMessageUpdate>) {
   bot.command('leaderboard', async (ctx) => {
-    const countUserInLeader = 10;
-    // Get leaderboard users
-    const users = await getLeaderBalance(ctx.from.id, countUserInLeader);
+    // Get users leaderboard
+    const users = await getLeaderboard(ctx.from.id)
     // Get chat users
-    const members = await Promise.all(users.map(user => getUser(ctx, user)));
+    const members = await Promise.all(users.map((user: User) => getUser(ctx, user)))
 
     // Prepare leaderboard
-    const list = members.map(member => `*${member.username}*: *${member.balance}*`).join('\n');
+    const list = members.map((member: LeaderBoardUser) => `*${member.string}*: *${member.number}*`).join('\n')
     // Prepare text
-    const text = `🏆  Топ ${countUserInLeader} Мемолиархов 🏆\n\n${list}`;
+    const text = `🏆  Топ Мемолиархов 🏆\n\n${list}`
     // Reply
     ctx.replyWithMarkdown(text)
   })
