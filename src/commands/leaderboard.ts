@@ -21,7 +21,7 @@ async function getUser(ctx: any, user: User): Promise<LeaderBoardUser> {
 export function setupLeaderBoard(bot: Telegraf<ContextMessageUpdate>) {
   bot.command('leaderboard', async (ctx) => {
     // Get users leaderboard
-    const users = await getLeaderboard(ctx.from.id)
+    const users = await getLeaderboard()
     // Get chat users
     const members = await Promise.all(users.map((user: User) => getUser(ctx, user)))
 

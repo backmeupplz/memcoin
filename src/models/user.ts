@@ -21,6 +21,6 @@ export async function getUser(chatId: number) {
   return user
 }
 
-export function getLeaderboard(chatId: number) {
+export function getLeaderboard() {
   return UserModel.find().sort({ balance: 'desc' }).limit(10)
 }
