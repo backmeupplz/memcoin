@@ -1,0 +1,28 @@
+{
+  "name": "memcoin",
+  "version": "1.0.0",
+  "description": "Memecoin for @borodutcher",
+  "main": "dist/app.js",
+  "scripts": {
+    "distribute": "yarn build-ts && node dist/app.js",
+    "develop": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold\" \"yarn watch-ts\" \"yarn watch-js\"",
+    "build-ts": "tsc --skipLibCheck",
+    "watch-ts": "tsc -w --skipLibCheck",
+    "watch-js": "nodemon dist/app.js"
+  },
+  "repository": "https://github.com/backmeupplz/memcoin",
+  "author": "backmeupplz <backmeupplz@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@types/dotenv": "^4.0.3",
+    "@types/mongoose": "^5.2.5",
+    "concurrently": "^3.6.1",
+    "dotenv": "^6.0.0",
+    "mongoose": "^5.2.7",
+    "reflect-metadata": "^0.1.12",
+    "telegraf": "^3.22.2",
+    "tslint": "^5.11.0",
+    "typegoose": "^5.2.1",
+    "typescript": "^3.0.1"
+  }
+}
