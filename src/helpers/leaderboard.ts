@@ -17,8 +17,7 @@ export async function getUserInfo(bot: Telegraf<ContextMessageUpdate>, user: Use
       name: getName(member),
       balance: user.balance,
     } as LeaderboardUser
-  } catch(e) {
-    console.log(e)
+  } catch (e) {
     return {
       chatId: user.chatId,
       name: 'Deleted',

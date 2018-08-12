@@ -1,7 +1,7 @@
 // Dependencies
 import { Telegraf, ContextMessageUpdate } from 'telegraf'
 import { Response } from 'express'
-import { User } from '../models/user'
+import { User } from '../src/models/user'
 
 declare global {
   namespace Express {

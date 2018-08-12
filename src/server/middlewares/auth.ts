@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from 'express'
 import { getUserByToken } from '../../models/user'
 
-class AuthError  extends Error {
+class AuthError extends Error {
   type = 'AuthError'
   message = 'Not Access!'
   code = 401

@@ -1,25 +1,23 @@
-// Import only what we need from express
-import { Router, Request, Response } from 'express'
+// Dependencies
+import { Router } from 'express'
 import { getUserInfo } from '../../helpers/leaderboard'
 import { getUser } from '../../models'
 
 // Assign router to the express.Router() instance
 const router: Router = Router()
 
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', async (req, res) => {
+  const { id } = req.params
   try {
-    let { id } = req.params
     const user = await getUser(id)
     const info = await getUserInfo(res.bot, user)
     res.json({
       success: true,
       user: info,
     })
-  } catch(e) {
-    res.status(500).json({
-      type: 'UnknowedError',
-    })
+  } catch (error) {
+    res.status(500).json(error)
   }
 })
 
-export const UserController: Router = router
+export const UserRoute = router

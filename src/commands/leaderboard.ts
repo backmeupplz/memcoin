@@ -3,7 +3,7 @@ import { Telegraf, ContextMessageUpdate } from 'telegraf'
 import { getUserInfo, LeaderboardUser } from '../helpers/leaderboard'
 import { getLeaderboard } from '../models'
 
-// Leaderboard commands
+// Leaderboard command
 export function setupLeaderboard(bot: Telegraf<ContextMessageUpdate>) {
   bot.command('leaderboard', async (ctx) => {
     // Get users leaderboard

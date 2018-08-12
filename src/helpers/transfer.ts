@@ -2,42 +2,36 @@
 import { Telegraf, ContextMessageUpdate } from 'telegraf'
 import { User, getUser } from '../models/user'
 import { getName } from './name'
+import { isReply } from './middleware'
 
 export function setupTransfer(bot: Telegraf<ContextMessageUpdate>) {
-  bot.use((ctx, next) => {
-    try {
-      checkTransfer(ctx)
-    } catch (err) {
-    } finally {
-      next()
-    }
-  })
+  bot.hears(/\+/g, isReply, checkTransfer)
 }
 
-export class ErrorTransfer extends Error {
+export class TransferError extends Error {
   type = 'ErrorNotEnotherCoins'
-  message = 'Похоже, произошла ошибка при переводе средств'
+  message = 'Произошла ошибка при переводе средств'
 }
 
-export class ErrorNotEnotherCoins extends ErrorTransfer {
-  type = 'ErrorNotEnotherCoins'
-  message = 'Сорямба, у тебя недостаточно Мемкоинов на этот перевод'
+export class NotEnoughCoinsError extends TransferError {
+  type = 'NotEnoughCoinsError'
+  message = 'Сорямба, у пользователя недостаточно Мемкоинов для этого перевода'
 }
 
-export class ErrorSendSelf extends ErrorTransfer {
-  type = 'ErrorSendSelf'
-  message = `*Во имя Мемриарха*, астанавись! Сам себе коины тут кидаешь, мне работать нужно, а ведь у меня обед скоро! А ну, *пшел вон, пес*!`
+export class SendSelfError extends TransferError {
+  type = 'SendSelfError'
+  message = `*Во имя Мемриарха*, астанавись! Сами себе коины тут кидают, мне работать нужно, а ведь у меня обед скоро! А ну, *пшел вон, пес*!`
 }
 
 export async function transfer(sender: User, receiver: User, amount: number) {
-  // Check if user not send for self
+  // Check if receiver is not the same as sender
   if (receiver.chatId === sender.chatId) {
-    throw new ErrorSendSelf()
+    throw new SendSelfError()
   }
 
   // Check if enough balance
   if (sender.balance < amount) {
-    throw new ErrorNotEnotherCoins()
+    throw new NotEnoughCoinsError()
   }
 
   sender.balance -= amount
@@ -47,28 +41,17 @@ export async function transfer(sender: User, receiver: User, amount: number) {
   receiver = await receiver.save()
 }
 
-
-
-class ErrorIsNotMinter extends Error {}
-
 function isMinter(user: User) {
   // Check if minter
   return [249626104, 76104711, 80523220].indexOf(user.chatId) > -1
 }
 
 async function mint(user: User, amount: number) {
-  // Check if user not send for self
-  if (!isMinter(user)) {
-    throw new ErrorIsNotMinter()
-  }
-
   user.balance += amount
   return user.save()
 }
 
 async function checkTransfer(ctx: ContextMessageUpdate) {
-  // Check if reply
-  if (!ctx.message || !ctx.message.text || !ctx.message.reply_to_message || !ctx.from.id || !ctx.message.reply_to_message.from.id || ctx.message.reply_to_message.from.is_bot) return
   // Get number of coins to send
   const amount = (ctx.message.text.match(/\+/g) || []).length
   // Check amount
@@ -76,7 +59,7 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
   // Get sender
   let sender = await getUser(ctx.from.id)
   // Get receiver
-  let receiver = await getUser(ctx.message.reply_to_message.from.id)
+  const receiver = await getUser(ctx.message.reply_to_message.from.id)
 
   try {
     const senderIsMinter = isMinter(sender)
@@ -95,12 +78,10 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
     await ctx.replyWithMarkdown(text, {
       reply_to_message_id: ctx.message.message_id,
     })
-  } catch(err) {
-    if (err instanceof ErrorTransfer) {
-      await ctx.reply(err.message, {
-        reply_to_message_id: ctx.message.message_id,
-      })
-      return
-    }
+  } catch (err) {
+    await ctx.reply(err.message, {
+      reply_to_message_id: ctx.message.message_id,
+    })
+    return
   }
 }

@@ -7,6 +7,8 @@ Code of the [@memecoin_bot](https://t.me/memecoin_bot) Telegram bot. Reputation 
 4. Run `yarn distribute`
 # Environment variables in `.env` file
 * `USERNAME` — Telegram bot username
+* `SECRET` — Secret key for generate auth token
+* `PORT` — Port for API server
 * `TOKEN` — Telegram bot token
 * `MONGO` — URL of the mongo db
 Please, consider refering to provided `env.sample` for further docs.
