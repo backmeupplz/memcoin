@@ -3,8 +3,7 @@ import { Router } from 'express'
 import { getUser } from '../../models'
 import { transfer } from '../../helpers/transfer'
 
-// Assign router to the express.Router() instance
-const router: Router = Router()
+const router = Router()
 
 router.post('/', async (req, res) => {
   const { senderId, receiverId } = req.body

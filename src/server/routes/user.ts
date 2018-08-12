@@ -3,8 +3,7 @@ import { Router } from 'express'
 import { getUserInfo } from '../../helpers/leaderboard'
 import { getUser } from '../../models'
 
-// Assign router to the express.Router() instance
-const router: Router = Router()
+const router = Router()
 
 router.get('/:id', async (req, res) => {
   const { id } = req.params
