@@ -9,6 +9,7 @@ Code of the [@memecoin_bot](https://t.me/memecoin_bot) Telegram bot. Reputation 
 * `USERNAME` — Telegram bot username
 * `TOKEN` — Telegram bot token
 * `MONGO` — URL of the mongo db
+
 Please, consider refering to provided `env.sample` for further docs.
 # Continuous integration
 Any commit pushed to master gets deployed to [@memecoin_bot](https://t.me/memecoin_bot) via [CI Ninja](https://github.com/backmeupplz/ci-ninja).
