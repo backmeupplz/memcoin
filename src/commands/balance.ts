@@ -3,7 +3,7 @@ import { Telegraf, ContextMessageUpdate } from 'telegraf'
 import { getUser } from '../models'
 import { getName } from '../helpers/name'
 
-// Help commands
+// Balance commands
 export function setupBalance(bot: Telegraf<ContextMessageUpdate>) {
   bot.command('balance', async (ctx) => {
     // Get user

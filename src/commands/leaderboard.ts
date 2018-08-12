@@ -1,36 +1,15 @@
 // Dependencies
 import { Telegraf, ContextMessageUpdate } from 'telegraf'
-import { User } from '../models/user'
+import { getUserInfo, LeaderboardUser } from '../helpers/leaderboard';
 import { getLeaderboard } from '../models'
-import { getName } from '../helpers/name'
 
-interface LeaderboardUser {
-  name: String,
-  balance: Number,
-}
-
-async function getUser(ctx: ContextMessageUpdate, user: User) {
-  try {
-    const member = await ctx.telegram.getChatMember(user.chatId, user.chatId)
-    return {
-      name: getName(member),
-      balance: user.balance,
-    } as LeaderboardUser
-  } catch(e) {
-    return {
-      name: 'Deleted',
-      balance: user.balance,
-    } as LeaderboardUser
-  }
-}
-
-// Help commands
+// Leaderboard commands
 export function setupLeaderboard(bot: Telegraf<ContextMessageUpdate>) {
   bot.command('leaderboard', async (ctx) => {
     // Get users leaderboard
     const users = await getLeaderboard()
     // Get chat users
-    const members: LeaderboardUser[] = await Promise.all(users.map(user => getUser(ctx, user)))
+    const members: LeaderboardUser[] = await Promise.all(users.map(user => getUserInfo(bot, user)))
     // Prepare leaderboard
     const list = members.map(member => `*${member.name}*: *${member.balance}*`).join('\n')
     // Prepare text
