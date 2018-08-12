@@ -20,3 +20,7 @@ export async function getUser(chatId: number) {
   }
   return user
 }
+
+export async function getLeaderboard() {
+  return UserModel.find().sort({ balance: 'desc' }).limit(10)
+}
