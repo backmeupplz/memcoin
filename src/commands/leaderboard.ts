@@ -10,11 +10,18 @@ interface LeaderboardUser {
 }
 
 async function getUser(ctx: ContextMessageUpdate, user: User) {
-  const member = await ctx.telegram.getChatMember(user.chatId, user.chatId)
-  return {
-    name: getName(member),
-    balance: user.balance,
-  } as LeaderboardUser
+  try {
+    const member = await ctx.telegram.getChatMember(user.chatId, user.chatId)
+    return {
+      name: getName(member),
+      balance: user.balance,
+    } as LeaderboardUser
+  } catch(e) {
+    return {
+      name: 'Deleted',
+      balance: user.balance,
+    } as LeaderboardUser
+  }
 }
 
 // Help commands
