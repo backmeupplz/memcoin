@@ -15,6 +15,6 @@
     },
     "allowSyntheticDefaultImports": true
   },
-  "files": ["src/controllers/custom.d.ts"],
+  "files": ["src/server/types.d.ts"],
   "include": ["src/**/*"]
 }

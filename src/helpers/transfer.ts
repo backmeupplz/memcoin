@@ -43,7 +43,6 @@ export async function transfer(sender: User, receiver: User, amount: number) {
   sender.balance -= amount
   sender = await sender.save()
 
-  // Transfer
   receiver.balance += amount
   receiver = await receiver.save()
 }
@@ -76,11 +75,11 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
   if (!amount) return
   // Get sender
   let sender = await getUser(ctx.from.id)
-  const senderIsMinter = isMinter(sender)
   // Get receiver
   let receiver = await getUser(ctx.message.reply_to_message.from.id)
 
   try {
+    const senderIsMinter = isMinter(sender)
     if (senderIsMinter) {
       sender = await mint(sender, amount)
     }

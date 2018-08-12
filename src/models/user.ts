@@ -8,7 +8,6 @@ export class UserSchema extends Typegoose {
   chatId: number
   @prop({ required: true, default: 0 })
   balance: number
-  @prop({ default: false })
   tokenApi: String
 }
 
@@ -23,6 +22,11 @@ export async function getUser(chatId: number) {
     user = new UserModel({ chatId })
     user = await user.save()
   }
+  return user
+}
+
+export async function getUserByToken(tokenApi: string) {
+  let user = await UserModel.findOne({ tokenApi })
   return user
 }
 

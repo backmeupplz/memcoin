@@ -9,7 +9,7 @@ import { setupLeaderboard } from './commands/leaderboard'
 import { setupBalance } from './commands/balance'
 import { setupToken } from './commands/token'
 import { setupTransfer } from './helpers/transfer'
-import { setupAPI } from './api';
+import { setupAPI } from './server'
 
 // Setup the bot
 const bot: Telegraf<ContextMessageUpdate> = new telegraf(process.env.TOKEN, { username: process.env.USERNAME })

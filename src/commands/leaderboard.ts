@@ -1,6 +1,6 @@
 // Dependencies
 import { Telegraf, ContextMessageUpdate } from 'telegraf'
-import { getUserInfo, LeaderboardUser } from '../helpers/leaderboard';
+import { getUserInfo, LeaderboardUser } from '../helpers/leaderboard'
 import { getLeaderboard } from '../models'
 
 // Leaderboard commands
