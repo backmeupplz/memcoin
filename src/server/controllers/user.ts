@@ -10,10 +10,10 @@ router.get('/:id', async (req: Request, res: Response) => {
   try {
     let { id } = req.params
     const user = await getUser(id)
-    const member = await getUserInfo(res.bot, user)
+    const info = await getUserInfo(res.bot, user)
     res.json({
       success: true,
-      member,
+      user: info,
     })
   } catch(e) {
     res.status(500).json({

@@ -12,15 +12,14 @@ export function setupAPI(bot: Telegraf<ContextMessageUpdate>) {
   // The port the express app will listen on
   const port: number | string = process.env.PORT || 3000
   
-  // Mount the UsersController at the /user route
   app.use(express.urlencoded({ extended: false }))
   app.use(express.json()) 
   app.use(auth)
-  app.use('/user', UserController)
-  app.use('/transfer', TransferController)
-
   // use telegraph
   app.use(telegraphMiddlware(bot))
+  // controllers
+  app.use('/user', UserController)
+  app.use('/transfer', TransferController)
 
   // Serve the application at the given port
   app.listen(port, () => {
