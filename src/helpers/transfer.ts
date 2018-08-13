@@ -73,7 +73,7 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
       reply_to_message_id: ctx.message.message_id,
     })
   } catch (err) {
-    await ctx.reply(err.message, {
+    await ctx.replyWithMarkdown(err.message, {
       reply_to_message_id: ctx.message.message_id,
     })
     return
