@@ -10,7 +10,7 @@ export function setupLeaderboard(bot: Telegraf<ContextMessageUpdate>) {
     // Get chat users
     const members: UserInfo[] = await Promise.all(users.map(user => getUserInfo(bot.telegram, user, ctx.chat.type === 'private' ? undefined : ctx.chat.id)))
     // Prepare leaderboard
-    const list = members.map(member => `*${member.name}*: ${member.balance}`).join('\n')
+    const list = members.map(member => `${member.name}: *${member.balance}*`).join('\n')
     // Prepare text
     const text = `🏆 Топ Мемолиархов 🏆\n\n${list}`
     // Reply
