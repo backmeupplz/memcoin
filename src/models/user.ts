@@ -71,10 +71,10 @@ export async function getLeaderboard() {
   return UserModel.find().sort({ balance: 'desc' }).limit(10)
 }
 
-export async function getUserInfo(telegram: Telegram, user: IUser): Promise<UserInfo> {
+export async function getUserInfo(telegram: Telegram, user: IUser, chatId?: number): Promise<UserInfo> {
   try {
     // Get Telegram member
-    const member = await telegram.getChatMember(user.chatId, user.chatId)
+    const member = await telegram.getChatMember(chatId || user.chatId, user.chatId)
     // Return it's info
     return {
       chatId: user.chatId,
@@ -85,7 +85,7 @@ export async function getUserInfo(telegram: Telegram, user: IUser): Promise<User
     // In case if it fails, return deleted user
     return {
       chatId: user.chatId,
-      name: 'Deleted User',
+      name: `[Неопределенный гаражанин](tg://user?id=${user.chatId})`,
       balance: user.balance,
     }
   }

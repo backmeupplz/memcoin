@@ -8,7 +8,7 @@ export function setupLeaderboard(bot: Telegraf<ContextMessageUpdate>) {
     // Get users leaderboard
     const users = await getLeaderboard()
     // Get chat users
-    const members: UserInfo[] = await Promise.all(users.map(user => getUserInfo(bot.telegram, user)))
+    const members: UserInfo[] = await Promise.all(users.map(user => getUserInfo(bot.telegram, user, ctx.chat.type === 'private' ? undefined : ctx.chat.id)))
     // Prepare leaderboard
     const list = members.map(member => `*${member.name}*: ${member.balance}`).join('\n')
     // Prepare text
