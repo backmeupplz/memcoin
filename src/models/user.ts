@@ -11,7 +11,7 @@ class User extends Typegoose {
   @prop({ required: true, index: true, default: 10 })
   balance: number
   @prop()
-  apiToken: String
+  apiToken: string
 }
 
 // User type
@@ -19,9 +19,10 @@ export type IUser = InstanceType<User>
 
 // User info type used internally
 export interface UserInfo {
-  name: String,
-  balance: Number,
-  chatId: Number,
+  name: string;
+  balance: number;
+  chatId: number;
+  isUndefined: boolean;
 }
 
 // User model used internally
@@ -80,13 +81,15 @@ export async function getUserInfo(telegram: Telegram, user: IUser, chatId?: numb
       chatId: user.chatId,
       name: getName(member),
       balance: user.balance,
+      isUndefined: false,
     }
   } catch (e) {
     // In case if it fails, return deleted user
     return {
       chatId: user.chatId,
-      name: `[Неопределенный гаражанин](tg://user?id=${user.chatId})`,
+      name: `Неопределенный гаражанин`,
       balance: user.balance,
+      isUndefined: true,
     }
   }
 }
