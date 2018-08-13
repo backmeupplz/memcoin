@@ -5,7 +5,7 @@ import { Telegram } from 'telegraf'
 import { getName } from '../helpers/name'
 
 // User class definition
-class UserSchema extends Typegoose {
+class User extends Typegoose {
   @prop({ required: true, index: true })
   chatId: number
   @prop({ required: true, default: 10 })
@@ -15,7 +15,7 @@ class UserSchema extends Typegoose {
 }
 
 // User type
-export type User = InstanceType<UserSchema>
+export type IUser = InstanceType<User>
 
 // User info type used internally
 export interface UserInfo {
@@ -25,7 +25,7 @@ export interface UserInfo {
 }
 
 // User model used internally
-const UserModel = new UserSchema().getModelForClass(UserSchema)
+const UserModel = new User().getModelForClass(User)
 
 export async function getUser(chatId: number) {
   // Find user
@@ -71,7 +71,7 @@ export async function getLeaderboard() {
   return UserModel.find().sort({ balance: 'desc' }).limit(10)
 }
 
-export async function getUserInfo(telegram: Telegram, user: User): Promise<UserInfo> {
+export async function getUserInfo(telegram: Telegram, user: IUser): Promise<UserInfo> {
   try {
     // Get Telegram member
     const member = await telegram.getChatMember(user.chatId, user.chatId)

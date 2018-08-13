@@ -1,7 +1,6 @@
 // Dependencies
 import { Telegraf, ContextMessageUpdate } from 'telegraf'
-import { User, getUser, getUserInfo } from '../models/user'
-import { getName } from './name'
+import { IUser, getUser, getUserInfo } from '../models/user'
 import { isReply } from './middleware'
 
 export function setupTransfer(bot: Telegraf<ContextMessageUpdate>) {
@@ -23,7 +22,7 @@ export class SendSelfError extends TransferError {
   message = `*Во имя Мемриарха*, астанавись! Сами себе коины тут кидают, мне работать нужно, а ведь у меня обед скоро! А ну, *пшел вон, пес*!`
 }
 
-export async function transfer(sender: User, receiver: User, amount: number) {
+export async function transfer(sender: IUser, receiver: IUser, amount: number) {
   // Check if receiver is not the same as sender
   if (receiver.chatId === sender.chatId) throw new SendSelfError()
   // Check if enough balance
@@ -36,12 +35,12 @@ export async function transfer(sender: User, receiver: User, amount: number) {
   receiver = await receiver.save()
 }
 
-function isMinter(user: User) {
+function isMinter(user: IUser) {
   // Check if minter
   return [249626104, 76104711, 80523220].indexOf(user.chatId) > -1
 }
 
-async function mint(user: User, amount: number) {
+async function mint(user: IUser, amount: number) {
   // Add balance to user
   user.balance += amount
   return user.save()
