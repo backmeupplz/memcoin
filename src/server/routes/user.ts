@@ -1,19 +1,19 @@
 // Dependencies
 import { Router } from 'express'
-import { getUserInfo } from '../../helpers/leaderboard'
-import { getUser } from '../../models'
+import { getUser, getUserInfo } from '../../models'
 
 const router = Router()
 
 router.get('/:id', async (req, res) => {
-  const { id } = req.params
   try {
+    // Get id
+    const { id } = req.params
+    // Get user from db
     const user = await getUser(id)
-    const info = await getUserInfo(res.bot, user)
-    res.json({
-      success: true,
-      user: info,
-    })
+    // Get user info with balance
+    const info = await getUserInfo(req.telegram, user)
+    // Respond with info
+    res.json(info)
   } catch (error) {
     res.status(500).json(error)
   }

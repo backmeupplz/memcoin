@@ -1,9 +1,11 @@
 import { Response, Request, NextFunction } from 'express'
-import { Telegraf, ContextMessageUpdate } from 'telegraf'
+import { Telegram } from 'telegraf'
 
-export function telegraphMiddlware(bot: Telegraf<ContextMessageUpdate>) {
-  return function (req: Request, res: Response, next: NextFunction) {
-    res.bot = bot
+export function telegrafMiddlware(telegram: Telegram) {
+  return function (req: Request, _: Response, next: NextFunction) {
+    // Attach telegram to the request
+    req.telegram = telegram
+    // Continue
     next()
   }
 }

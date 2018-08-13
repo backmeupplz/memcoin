@@ -1,7 +1,6 @@
 // Dependencies
 import { Telegraf, ContextMessageUpdate } from 'telegraf'
-import { getUser } from '../models'
-import { getName } from '../helpers/name'
+import { getUser, getUserInfo } from '../models'
 
 // Balance command
 export function setupBalance(bot: Telegraf<ContextMessageUpdate>) {
@@ -9,9 +8,9 @@ export function setupBalance(bot: Telegraf<ContextMessageUpdate>) {
     // Get user
     const user = await getUser(ctx.from.id)
     // Get chat user
-    const member = await ctx.telegram.getChatMember(ctx.chat.id, ctx.from.id)
+    const userInfo = await getUserInfo(ctx.telegram, user)
     // Prepare text
-    const text = `Дароу, *${getName(member)}*! Твой баланс *${user.balance}* Мемкоинов.`
+    const text = `Дароу, *${userInfo.name}*! Твой баланс *${userInfo.balance}* Мемкоинов.`
     // Reply
     ctx.replyWithMarkdown(text)
   })

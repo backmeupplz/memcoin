@@ -1,7 +1,6 @@
 // Dependencies
 import { Telegraf, ContextMessageUpdate } from 'telegraf'
-import { getUserInfo, LeaderboardUser } from '../helpers/leaderboard'
-import { getLeaderboard } from '../models'
+import { getLeaderboard, UserInfo, getUserInfo } from '../models'
 
 // Leaderboard command
 export function setupLeaderboard(bot: Telegraf<ContextMessageUpdate>) {
@@ -9,7 +8,7 @@ export function setupLeaderboard(bot: Telegraf<ContextMessageUpdate>) {
     // Get users leaderboard
     const users = await getLeaderboard()
     // Get chat users
-    const members: LeaderboardUser[] = await Promise.all(users.map(user => getUserInfo(bot, user)))
+    const members: UserInfo[] = await Promise.all(users.map(user => getUserInfo(bot.telegram, user)))
     // Prepare leaderboard
     const list = members.map(member => `*${member.name}*: ${member.balance}`).join('\n')
     // Prepare text

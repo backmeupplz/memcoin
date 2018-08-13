@@ -10,7 +10,7 @@ export function setupToken(bot: Telegraf<ContextMessageUpdate>) {
     // Find user
     const user = await getUser(ctx.from.id)
     // Prepare text
-    const text = user.apiToken ? `*Токен*:\n\`\`\`${user.apiToken}\`\`\`` : 'У вас нет доступа к API!'
+    const text = user.apiToken ? `*Токен*:\n\`\`\`${user.apiToken}\`\`\`` : 'У вас нет доступа к API — обратитесь за ним к @borodutch.'
     // Reply
     ctx.replyWithMarkdown(text)
   })

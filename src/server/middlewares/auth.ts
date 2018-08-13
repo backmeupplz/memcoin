@@ -1,35 +1,32 @@
 import { Response, Request, NextFunction } from 'express'
 import { getUserByToken } from '../../models/user'
 
-class AuthError extends Error {
-  type = 'AuthError'
-  message = 'Not Access!'
+class InvalidTokenError extends Error {
+  type = 'InvalidTokenError'
+  message = 'Invalid token'
   code = 401
 }
-class NotFoundToken extends AuthError {
+class TokenNotFoundError extends Error {
+  type = 'TokenNotFoundError'
+  message = 'Token not provided'
   code = 403
-  type = 'NotFoundToken'
-  message = 'Not found authorization key!'
 }
 
 export async function auth(req: Request, res: Response, next: NextFunction) {
-  const Authkey = req.headers.authorization
   try {
-    if (!Authkey) {
-      throw new NotFoundToken()
-    }
-    const user = await getUserByToken(Authkey)
-    if (!user) {
-      throw new NotFoundToken()
-    }
-    res.user = user
+    // Get token
+    const token = req.headers.token as string
+    // If no token, throw
+    if (!token) throw new TokenNotFoundError()
+    // Find user
+    const user = await getUserByToken(token)
+    // If no user, throw
+    if (!user) throw new InvalidTokenError()
+    // Add user to the request
+    req.user = user
+    // Continue
     next()
-  } catch (e) {
-    if (e instanceof AuthError) {
-      res.status(e.code).json({
-        type: e.type,
-        message: e.message,
-      })
-    }
+  } catch (error) {
+    res.status(error.code || 500).json(error)
   }
 }

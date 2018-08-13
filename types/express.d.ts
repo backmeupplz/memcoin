@@ -1,12 +1,12 @@
 // Dependencies
-import { Telegraf, ContextMessageUpdate } from 'telegraf'
-import { Response } from 'express'
+import { Telegram } from 'telegraf'
+import { Request } from 'express'
 import { User } from '../src/models/user'
 
 declare global {
   namespace Express {
-    interface Response {
-      bot: Telegraf<ContextMessageUpdate>,
+    interface Request {
+      telegram: Telegram,
       user: User,
     }
   }

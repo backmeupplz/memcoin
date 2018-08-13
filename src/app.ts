@@ -25,4 +25,4 @@ setupBalance(bot)
 setupToken(bot)
 
 // Run API server
-setupAPI(bot)
+setupAPI(bot.telegram)

@@ -12,6 +12,6 @@ export function isReply(ctx: ContextMessageUpdate, next: () => any) {
 }
 
 export function checkAdmin(ctx: ContextMessageUpdate, next: () => any) {
-  if (ctx.from.id === parseInt(process.env.ADMIN_ID, 10)) return next()
+  if (ctx.from.id === Number(process.env.ADMIN_ID)) return next()
   return Promise.resolve()
 }

@@ -1,6 +1,6 @@
 // Dependencies
 import { Telegraf, ContextMessageUpdate } from 'telegraf'
-import { User, getUser } from '../models/user'
+import { User, getUser, getUserInfo } from '../models/user'
 import { getName } from './name'
 import { isReply } from './middleware'
 
@@ -9,8 +9,8 @@ export function setupTransfer(bot: Telegraf<ContextMessageUpdate>) {
 }
 
 export class TransferError extends Error {
-  type = 'ErrorNotEnotherCoins'
-  message = 'Произошла ошибка при переводе средств'
+  type = 'TransferError'
+  message = 'Произошла ошибка при переводе мемкоинов'
 }
 
 export class NotEnoughCoinsError extends TransferError {
@@ -25,18 +25,13 @@ export class SendSelfError extends TransferError {
 
 export async function transfer(sender: User, receiver: User, amount: number) {
   // Check if receiver is not the same as sender
-  if (receiver.chatId === sender.chatId) {
-    throw new SendSelfError()
-  }
-
+  if (receiver.chatId === sender.chatId) throw new SendSelfError()
   // Check if enough balance
-  if (sender.balance < amount) {
-    throw new NotEnoughCoinsError()
-  }
-
+  if (sender.balance < amount) throw new NotEnoughCoinsError()
+  // Remove balance from sender
   sender.balance -= amount
   sender = await sender.save()
-
+  // Add balance to receiver
   receiver.balance += amount
   receiver = await receiver.save()
 }
@@ -47,6 +42,7 @@ function isMinter(user: User) {
 }
 
 async function mint(user: User, amount: number) {
+  // Add balance to user
   user.balance += amount
   return user.save()
 }
@@ -60,21 +56,20 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
   let sender = await getUser(ctx.from.id)
   // Get receiver
   const receiver = await getUser(ctx.message.reply_to_message.from.id)
-
   try {
+    // If minter, mint the coins first
     const senderIsMinter = isMinter(sender)
     if (senderIsMinter) {
       sender = await mint(sender, amount)
     }
+    // Transfer coins
     await transfer(sender, receiver, amount)
-
-    // Get receiver member
-    const receiverMember = await ctx.telegram.getChatMember(ctx.chat.id, receiver.chatId)
-    const receiverName = getName(receiverMember)
+    // Get receiver info
+    const receiverInfo = await getUserInfo(ctx.telegram, receiver)
     // Reply
     const text = senderIsMinter ?
-      `*${amount}* Мемкоинов было выдано гаражанину *${receiverName}*` :
-      `*${amount}* Мемкоинов было переведено гаражанину *${receiverName}*`
+      `*${amount}* Мемкоинов было выдано гаражанину *${receiverInfo.name}*` :
+      `*${amount}* Мемкоинов было переведено гаражанину *${receiverInfo.name}*`
     await ctx.replyWithMarkdown(text, {
       reply_to_message_id: ctx.message.message_id,
     })
