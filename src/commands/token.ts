@@ -15,7 +15,7 @@ export function setupToken(bot: Telegraf<ContextMessageUpdate>) {
     ctx.replyWithMarkdown(text)
   })
 
-  bot.command('open_access', checkAdmin, isReply, async (ctx) => {
+  bot.command('give', checkAdmin, isReply, async (ctx) => {
     const promotedUserID = ctx.message.reply_to_message.from.id
     // Open access
     await generateApiTokenForUser(promotedUserID)
@@ -26,7 +26,7 @@ export function setupToken(bot: Telegraf<ContextMessageUpdate>) {
     ctx.replyWithMarkdown(text)
   })
 
-  bot.command('revoke', checkAdmin, isReply, async (ctx) => {
+  bot.command('take', checkAdmin, isReply, async (ctx) => {
     const reducedUserID = ctx.message.reply_to_message.from.id
     // Revoke access
     await revokeApiTokenForUser(reducedUserID)
