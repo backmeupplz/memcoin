@@ -1,6 +1,6 @@
 // Dependencies
 import { prop, Typegoose, InstanceType } from 'typegoose'
-import hash from 'object-hash'
+import * as hash from 'object-hash'
 import { Telegram } from 'telegraf'
 import { getName } from '../helpers/name'
 
