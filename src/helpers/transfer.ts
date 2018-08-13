@@ -67,8 +67,8 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
     const receiverInfo = await getUserInfo(ctx.telegram, receiver)
     // Reply
     const text = senderIsMinter ?
-      `*${amount}* Мемкоинов было выдано гаражанину *${receiverInfo.name}*` :
-      `*${amount}* Мемкоинов было переведено гаражанину *${receiverInfo.name}*`
+      `*${amount}* Мемкоинов было выдано гаражанину *${receiverInfo.name}*. Теперб у нихм ${receiverinfo.balance + amount} Мемкоинов.` :
+      `*${amount}* Мемкоинов было переведено гаражанину *${receiverInfo.name}*. Теперб у нихм ${receiverinfo.balance + amount} Мемкоинов.`
     await ctx.replyWithMarkdown(text, {
       reply_to_message_id: ctx.message.message_id,
     })
