@@ -1,10 +1,11 @@
 // Dependencies
 import { Telegraf, ContextMessageUpdate } from 'telegraf'
 import { IUser, getUser, getUserInfo } from '../models/user'
-import { isReply } from './middleware'
+import { isReply, checkAdmin } from './middleware'
 
 export function setupTransfer(bot: Telegraf<ContextMessageUpdate>) {
   bot.hears(/\+/g, isReply, checkTransfer)
+  bot.hears(/\-/g, isReply, checkAdmin, checkLustration)
 }
 
 export class TransferError extends Error {
@@ -44,6 +45,32 @@ async function mint(user: IUser, amount: number) {
   // Add balance to user
   user.balance += amount
   return user.save()
+}
+
+async function checkLustration(ctx: ContextMessageUpdate) {
+  // Get number of coins to send
+  const amount = (ctx.message.text.match(/\-/g) || []).length
+  // Check amount
+  if (!amount) return
+  // Get receiver
+  let victim = await getUser(ctx.message.reply_to_message.from.id)
+  try {
+    // Remove memecoins from victim
+    victim.balance -= amount
+    victim = await victim.save()
+    // Get receiver info
+    const receiverInfo = await getUserInfo(ctx.telegram, victim)
+    // Reply
+    const text = `Гаражанинб *${receiverInfo.name}* былм люстрированб на *${amount}* Мемкоинов. Теперб у нихм ${receiverInfo.balance} Мемкоинов.`
+    await ctx.replyWithMarkdown(text, {
+      reply_to_message_id: ctx.message.message_id,
+    })
+  } catch (err) {
+    await ctx.replyWithMarkdown(err.message, {
+      reply_to_message_id: ctx.message.message_id,
+    })
+    return
+  }
 }
 
 async function checkTransfer(ctx: ContextMessageUpdate) {
