@@ -7,6 +7,7 @@ const telegraf = require('telegraf')
 import { setupHelp } from './commands/help'
 import { setupLeaderboard } from './commands/leaderboard'
 import { setupBalance } from './commands/balance'
+import { setupToxicCommand } from './commands/toxics'
 import { setupToken } from './commands/token'
 import { setupTransfer } from './helpers/transfer'
 import { setupAPI } from './server'
@@ -17,6 +18,9 @@ bot.startPolling()
 
 // Setup transfer
 setupTransfer(bot)
+
+// Setup ministry commands
+setupToxicCommand(bot)
 
 // Setup help command
 setupHelp(bot)
