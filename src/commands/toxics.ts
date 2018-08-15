@@ -6,7 +6,7 @@ import { transfer } from './transfer'
 
 function isToxicMinisters(user: IUser) {
     // Check if ministers
-    return [249626104].indexOf(user.chatId) > -1
+    return [56778694].indexOf(user.chatId) > -1
   }
 
 // Ministry of toxic commands
@@ -26,8 +26,6 @@ async function checkAssets(ctx: ContextMessageUpdate) {
   try {
     // Transfer coins
     await transfer(sender, receiver, amount)
-    // Get receiver info
-    const receiverInfo = await getUserInfo(ctx.telegram, receiver)
     // Reply
     const text = `Приставы посетили *${defendantInfo.name}* и избяли у Гаражанина *${amount}* Мемкоинов. Теперб у нихм ${defendantInfo.balance} Мемкоинов.`
     await ctx.replyWithMarkdown(text, {
