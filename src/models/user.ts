@@ -8,7 +8,7 @@ import { getName } from '../helpers/name'
 class User extends Typegoose {
   @prop({ required: true, index: true })
   chatId: number
-  @prop({ required: true, index: true, default: 10 })
+  @prop({ required: true, index: true, default: 100 })
   balance: number
   @prop()
   apiToken: string
@@ -19,10 +19,10 @@ export type IUser = InstanceType<User>
 
 // User info type used internally
 export interface UserInfo {
-  name: string;
-  balance: number;
-  chatId: number;
-  isUndefined: boolean;
+  name: string
+  balance: number
+  chatId: number
+  isUndefined: boolean
 }
 
 // User model used internally
@@ -69,10 +69,15 @@ export async function revokeApiTokenForUser(chatId: number) {
 
 export async function getLeaderboard() {
   // Find 10 users with the most balance
-  return UserModel.find().sort({ balance: 'desc' }).limit(10)
+  return UserModel.find()
+    .sort({ balance: 'desc' })
+    .limit(10)
 }
 
-export async function getUserInfo(telegram: Telegram, user: IUser): Promise<UserInfo> {
+export async function getUserInfo(
+  telegram: Telegram,
+  user: IUser
+): Promise<UserInfo> {
   try {
     // Get Telegram member
     const member = await telegram.getChatMember(user.chatId, user.chatId)
