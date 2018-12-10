@@ -12,6 +12,8 @@ class User extends Typegoose {
   balance: number
   @prop()
   apiToken: string
+  @prop({ required: true, default: false })
+  isCardinal: boolean
 }
 
 // User type
@@ -69,9 +71,14 @@ export async function revokeApiTokenForUser(chatId: number) {
 
 export async function getLeaderboard() {
   // Find 10 users with the most balance
-  return UserModel.find()
+  return UserModel.find({ isCardinal: false })
     .sort({ balance: 'desc' })
     .limit(10)
+}
+
+export async function getCardinalLeaderboard() {
+  // Find 10 users with the most balance
+  return UserModel.find({ isCardinal: true }).sort({ balance: 'desc' })
 }
 
 export async function getUserInfo(
