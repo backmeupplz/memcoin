@@ -76,7 +76,7 @@ async function checkLustration(ctx: ContextMessageUpdate) {
 async function checkTransfer(ctx: ContextMessageUpdate) {
   // Get number of coins to send
   let amount = (ctx.message.text.match(/\+/g) || []).length
-  const heartAmount = (ctx.message.text.match(/\<3/g) || []).length
+  const heartAmount = (ctx.message.text.match(/<3/g) || []).length
   const emojiAmount = (ctx.message.text.match(/❤️/g) || []).length
   amount = amount + heartAmount + emojiAmount
   // Check amount
