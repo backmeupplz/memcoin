@@ -49,8 +49,8 @@ async function mint(user: IUser, amount: number) {
 async function checkTransfer(ctx: ContextMessageUpdate) {
   // Get number of coins to send
   let amount = (ctx.message.text.match(/\+/g) || []).length
-  const heartAmount = (ctx.message.text.match(/<3/g) || []).length
-  const emojiAmount = (ctx.message.text.match(/\uFE0F/g) || []).length
+  const heartAmount = contains(ctx.message.text, '<3')
+  const emojiAmount = contains(ctx.message.text, '❤️')
   amount = amount + heartAmount + emojiAmount
   // Check amount
   if (!amount) return
@@ -81,4 +81,8 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
     })
     return
   }
+}
+
+function contains(str: string, substr: string) {
+    return str.split(substr) - 1
 }
