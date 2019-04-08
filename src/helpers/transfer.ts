@@ -10,17 +10,17 @@ export function setupTransfer(bot: Telegraf<ContextMessageUpdate>) {
 
 export class TransferError extends Error {
   type = 'TransferError'
-  message = 'Произошла ошибка при переводе мемкоинов'
+  message = 'Произошла ошибка при переводе Лавкоинов'
 }
 
 export class NotEnoughCoinsError extends TransferError {
   type = 'NotEnoughCoinsError'
-  message = 'Сорямба, у пользователя недостаточно Мемкоинов для этого перевода'
+  message = 'Прошу прощения, но у пользователя недостаточно Лавкоинов для этого перевода'
 }
 
 export class SendSelfError extends TransferError {
   type = 'SendSelfError'
-  message = `*Во имя Мемриарха*, астанавись! Сами себе коины тут кидают, мне работать нужно, а ведь у меня обед скоро! А ну, *пшел вон, пес*!`
+  message = `*Во имя любви*, попробуйте лучше поделиться Лавкоинами с собеседниками!`
 }
 
 export async function transfer(sender: IUser, receiver: IUser, amount: number) {
@@ -47,37 +47,11 @@ async function mint(user: IUser, amount: number) {
   return user.save()
 }
 
-async function checkLustration(ctx: ContextMessageUpdate) {
-  // Get number of coins to send
-  const amount = (ctx.message.text.match(/\-/g) || []).length
-  // Check amount
-  if (!amount) return
-  // Get receiver
-  let victim = await getUser(ctx.message.reply_to_message.from.id)
-  try {
-    // Remove memecoins from victim
-    victim.balance -= amount
-    victim = await victim.save()
-    // Get receiver info
-    const receiverInfo = await getUserInfo(ctx.telegram, victim)
-    // Reply
-    const text = `Гаражанинб *${receiverInfo.name}* былм люстрированб на *${amount}* Мемкоинов. Теперб у нихм ${receiverInfo.balance} Мемкоинов.`
-    await ctx.replyWithMarkdown(text, {
-      reply_to_message_id: ctx.message.message_id,
-    })
-  } catch (err) {
-    await ctx.replyWithMarkdown(err.message, {
-      reply_to_message_id: ctx.message.message_id,
-    })
-    return
-  }
-}
-
 async function checkTransfer(ctx: ContextMessageUpdate) {
   // Get number of coins to send
   let amount = (ctx.message.text.match(/\+/g) || []).length
   const heartAmount = (ctx.message.text.match(/<3/g) || []).length
-  const emojiAmount = (ctx.message.text.match(/❤️/g) || []).length
+  const emojiAmount = (ctx.message.text.match(/\uFE0F/g) || []).length
   amount = amount + heartAmount + emojiAmount
   // Check amount
   if (!amount) return
@@ -97,8 +71,8 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
     const receiverInfo = await getUserInfo(ctx.telegram, receiver)
     // Reply
     const text = senderIsMinter ?
-      `*${amount}* Мемкоинов было выдано гаражанину *${receiverInfo.name}*. Теперб у нихм ${receiverInfo.balance} Мемкоинов.` :
-      `*${amount}* Мемкоинов было переведено гаражанину *${receiverInfo.name}*. Теперб у нихм ${receiverInfo.balance} Мемкоинов.`
+      `*${amount}* Лавкоинов было выдано товарищу *${receiverInfo.name}*. Теперь у товарища ${receiverInfo.balance} Лавкоинов.` :
+      `*${amount}* Лавкоинов было переведено товарищу *${receiverInfo.name}*. Теперь у товарища ${receiverInfo.balance} Лавкоинов.`
     await ctx.replyWithMarkdown(text, {
       reply_to_message_id: ctx.message.message_id,
     })
