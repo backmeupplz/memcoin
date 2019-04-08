@@ -77,7 +77,8 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
   // Get number of coins to send
   let amount = (ctx.message.text.match(/\+/g) || []).length
   const heartAmount = (ctx.message.text.match(/\<3/g) || []).length
-  amount = amount + heartAmount
+  const emojiAmount = (ctx.message.text.match(/❤️/g) || []).length
+  amount = amount + heartAmount + emojiAmount
   // Check amount
   if (!amount) return
   // Get sender
