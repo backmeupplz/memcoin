@@ -5,7 +5,6 @@ import { isReply, checkAdmin } from './middleware'
 
 export function setupTransfer(bot: Telegraf<ContextMessageUpdate>) {
   bot.hears(/\+/g, isReply, checkTransfer)
-  bot.hears(/\-/g, isReply, checkAdmin, checkLustration)
 }
 
 export class TransferError extends Error {
