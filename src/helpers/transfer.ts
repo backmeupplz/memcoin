@@ -4,7 +4,7 @@ import { IUser, getUser, getUserInfo } from '../models/user'
 import { isReply, checkAdmin } from './middleware'
 
 export function setupTransfer(bot: Telegraf<ContextMessageUpdate>) {
-  bot.hears(/\+/g, isReply, checkTransfer)
+  bot.hears(/./g, isReply, checkTransfer)
 }
 
 export class TransferError extends Error {
