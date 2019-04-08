@@ -84,5 +84,5 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
 }
 
 function contains(str: string, substr: string) {
-    return str.split(substr) - 1
+  return str.split(substr) - 1
 }
