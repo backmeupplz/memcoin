@@ -37,7 +37,7 @@ export async function transfer(sender: IUser, receiver: IUser, amount: number) {
 
 function isMinter(user: IUser) {
   // Check if minter
-  return [249626104, 76104711, 80523220].indexOf(user.chatId) > -1
+  return [249626104, 76104711, 80523220, 196846614].indexOf(user.chatId) > -1
 }
 
 async function mint(user: IUser, amount: number) {
