@@ -10,7 +10,7 @@ export function setupBalance(bot: Telegraf<ContextMessageUpdate>) {
     // Get chat user
     const userInfo = await getUserInfo(ctx.telegram, user)
     // Prepare text
-    const text = `Дароу, *${userInfo.name}*! Твой баланс *${userInfo.balance}* Мемкоинов.`
+    const text = `Добрый день, *${userInfo.name}*! У вас *${userInfo.balance}* Лавкоинов.`
     // Reply
     ctx.replyWithMarkdown(text)
   })
