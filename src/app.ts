@@ -15,14 +15,14 @@ import { setupAPI } from './server'
 const bot: Telegraf<ContextMessageUpdate> = new telegraf(process.env.TOKEN, { username: process.env.USERNAME })
 bot.startPolling()
 
-// Setup transfer
-setupTransfer(bot)
-
 // Setup help command
 setupHelp(bot)
 setupLeaderboard(bot)
 setupBalance(bot)
 setupToken(bot)
+
+// Setup transfer
+setupTransfer(bot)
 
 // Run API server
 setupAPI(bot.telegram)
