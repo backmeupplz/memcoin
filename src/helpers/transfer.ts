@@ -1,10 +1,11 @@
 // Dependencies
 import { Telegraf, ContextMessageUpdate } from 'telegraf'
 import { IUser, getUser, getUserInfo } from '../models/user'
-import { isReply, checkAdmin } from './middleware'
+import { isReply } from './middleware'
 
 export function setupTransfer(bot: Telegraf<ContextMessageUpdate>) {
   bot.hears(/./g, isReply, checkTransfer)
+  bot.on('sticker', isReply, checkTransfer)
 }
 
 export class TransferError extends Error {
@@ -14,7 +15,8 @@ export class TransferError extends Error {
 
 export class NotEnoughCoinsError extends TransferError {
   type = 'NotEnoughCoinsError'
-  message = 'Прошу прощения, но у пользователя недостаточно Лавкоинов для этого перевода'
+  message =
+    'Прошу прощения, но у пользователя недостаточно Лавкоинов для этого перевода'
 }
 
 export class SendSelfError extends TransferError {
@@ -47,13 +49,21 @@ async function mint(user: IUser, amount: number) {
 }
 
 async function checkTransfer(ctx: ContextMessageUpdate) {
-  // Get number of coins to send
-  let amount = (ctx.message.text.match(/\+/g) || []).length
-  const heartAmount = contains(ctx.message.text, '<3')
-  const emojiAmount = contains(ctx.message.text, '❤️')
-  amount = amount + heartAmount + emojiAmount
-  // Check amount
-  if (!amount) return
+  // Check if sticker
+  let amount = 0
+  if (ctx.message && ctx.message.sticker) {
+    if (ctx.message.sticker.emoji === '❤️') {
+      amount = 1
+    }
+  } else {
+    // Get number of coins to send
+    amount = (ctx.message.text.match(/\+/g) || []).length
+    const heartAmount = contains(ctx.message.text, '<3')
+    const emojiAmount = contains(ctx.message.text, '❤️')
+    amount = amount + heartAmount + emojiAmount
+    // Check amount
+    if (!amount) return
+  }
   // Get sender
   let sender = await getUser(ctx.from.id)
   // Get receiver
@@ -69,9 +79,13 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
     // Get receiver info
     const receiverInfo = await getUserInfo(ctx.telegram, receiver)
     // Reply
-    const text = senderIsMinter ?
-      `*${amount}* Лавкоинов было волшебным образом создано для *${receiverInfo.name}*. Всего у *${receiverInfo.name}* ${receiverInfo.balance} Лавкоинов.` :
-      `*${amount}* Лавкоинов было подарено *${receiverInfo.name}*. Всего у *${receiverInfo.name}* ${receiverInfo.balance} Лавкоинов.`
+    const text = senderIsMinter
+      ? `*${amount}* Лавкоинов было волшебным образом создано для *${
+          receiverInfo.name
+        }*. Всего у *${receiverInfo.name}* ${receiverInfo.balance} Лавкоинов.`
+      : `*${amount}* Лавкоинов было подарено *${receiverInfo.name}*. Всего у *${
+          receiverInfo.name
+        }* ${receiverInfo.balance} Лавкоинов.`
     await ctx.replyWithMarkdown(text, {
       reply_to_message_id: ctx.message.message_id,
     })
