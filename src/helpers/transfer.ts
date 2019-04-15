@@ -61,9 +61,9 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
     const heartAmount = contains(ctx.message.text, '<3')
     const emojiAmount = contains(ctx.message.text, '❤️')
     amount = amount + heartAmount + emojiAmount
-    // Check amount
-    if (!amount) return
   }
+  // Check amount
+  if (!amount) return
   // Get sender
   let sender = await getUser(ctx.from.id)
   // Get receiver
