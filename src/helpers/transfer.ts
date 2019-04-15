@@ -52,8 +52,10 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
   // Check if sticker
   let amount = 0
   if (ctx.message && ctx.message.sticker) {
-    if (ctx.message.sticker.emoji === '❤️') {
+    if (ctx.message.sticker.emoji.indexOf('❤️') > -1) {
       amount = 1
+    } else {
+      return
     }
   } else {
     // Get number of coins to send
@@ -61,9 +63,9 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
     const heartAmount = contains(ctx.message.text, '<3')
     const emojiAmount = contains(ctx.message.text, '❤️')
     amount = amount + heartAmount + emojiAmount
+    // Check amount
+    if (!amount) return
   }
-  // Check amount
-  if (!amount) return
   // Get sender
   let sender = await getUser(ctx.from.id)
   // Get receiver
