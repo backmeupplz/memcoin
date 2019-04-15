@@ -52,6 +52,7 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
   // Check if sticker
   let amount = 0
   if (ctx.message && ctx.message.sticker) {
+    console.log(ctx.message.sticker.emoji)
     if (ctx.message.sticker.emoji === '❤️') {
       amount = 1
     }
