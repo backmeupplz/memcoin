@@ -52,7 +52,14 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
   // Check if sticker
   let amount = 0
   if (ctx.message && ctx.message.sticker) {
-    if (ctx.message.sticker.emoji.indexOf('❤️') > -1) {
+    const allowedEmoji = ['❤️', '❤', '💑']
+    let allowed = false
+    allowedEmoji.forEach(e => {
+      if (ctx.message.sticker.emoji.indexOf(e) > -1) {
+        allowed = true
+      }
+    })
+    if (allowed) {
       amount = 1
     } else {
       return
