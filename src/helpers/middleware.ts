@@ -7,10 +7,9 @@ export function isPrivate(ctx: ContextMessageUpdate, next: () => any) {
 }
 
 export function isReply(ctx: ContextMessageUpdate, next: () => any) {
-  console.log(ctx.message)
   if (
     !ctx.message ||
-    !ctx.message.text ||
+    (!ctx.message.text && !ctx.message.sticker) ||
     !ctx.message.reply_to_message ||
     !ctx.message.reply_to_message.from
   )
