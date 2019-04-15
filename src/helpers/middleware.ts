@@ -7,7 +7,14 @@ export function isPrivate(ctx: ContextMessageUpdate, next: () => any) {
 }
 
 export function isReply(ctx: ContextMessageUpdate, next: () => any) {
-  if (!ctx.message || !ctx.message.text || !ctx.message.reply_to_message || !ctx.message.reply_to_message.from) return Promise.resolve()
+  console.log(ctx.message)
+  if (
+    !ctx.message ||
+    !ctx.message.text ||
+    !ctx.message.reply_to_message ||
+    !ctx.message.reply_to_message.from
+  )
+    return Promise.resolve()
   return next()
 }
 

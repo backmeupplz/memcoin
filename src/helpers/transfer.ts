@@ -5,7 +5,7 @@ import { isReply } from './middleware'
 
 export function setupTransfer(bot: Telegraf<ContextMessageUpdate>) {
   bot.hears(/./g, isReply, checkTransfer)
-  bot.on('sticker', checkTransfer)
+  bot.on('sticker', isReply, checkTransfer)
 }
 
 export class TransferError extends Error {
@@ -52,7 +52,6 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
   // Check if sticker
   let amount = 0
   if (ctx.message && ctx.message.sticker) {
-    console.log(ctx.message.sticker.emoji)
     if (ctx.message.sticker.emoji === '❤️') {
       amount = 1
     }
