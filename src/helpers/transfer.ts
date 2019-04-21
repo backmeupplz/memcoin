@@ -51,7 +51,7 @@ async function mint(user: IUser, amount: number) {
 async function checkTransfer(ctx: ContextMessageUpdate) {
   // Check if sticker
   let amount = 0
-  if (ctx.message && ctx.message.sticker) {
+  if (ctx.message && ctx.message.sticker && ctx.message.sticker.emoji) {
     const allowedEmoji = ['❤️', '❤', '💑']
     let allowed = false
     allowedEmoji.forEach(e => {
