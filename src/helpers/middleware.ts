@@ -21,3 +21,24 @@ export function checkAdmin(ctx: ContextMessageUpdate, next: () => any) {
   if (ctx.from.id === Number(process.env.ADMIN_ID)) return next()
   return Promise.resolve()
 }
+
+export async function checkTime(ctx: ContextMessageUpdate, next: () => any) {
+  if (ctx.updateType === 'message') {
+    if (
+      new Date().getTime() / 1000 - (ctx.message || ctx.channelPost).date <
+      5 * 60
+    ) {
+      next()
+    } else {
+      console.log(
+        `Ignoring message from ${ctx.from.id} at ${
+          ctx.chat.id
+        } (${new Date().getTime() / 1000}:${
+          (ctx.message || ctx.channelPost).date
+        })`
+      )
+    }
+  } else {
+    next()
+  }
+}

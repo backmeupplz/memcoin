@@ -10,11 +10,19 @@ import { setupBalance } from './commands/balance'
 import { setupToken } from './commands/token'
 import { setupTransfer } from './helpers/transfer'
 import { setupAPI } from './server'
+import { checkTime } from './helpers/middleware'
 
 // Setup the bot
-const bot: Telegraf<ContextMessageUpdate> = new telegraf(process.env.TOKEN, { username: process.env.USERNAME })
+const bot: Telegraf<ContextMessageUpdate> = new telegraf(process.env.TOKEN, {
+  username: process.env.USERNAME,
+})
 bot.startPolling()
+bot.catch((err: any) => {
+  console.error(err)
+})
 
+// Setup middlewares
+bot.use(checkTime)
 // Setup help command
 setupHelp(bot)
 setupLeaderboard(bot)
