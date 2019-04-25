@@ -14,6 +14,8 @@ class User extends Typegoose {
   apiToken: string
   @prop({ required: true, default: false })
   isCardinal: boolean
+  @prop({ required: true, default: false })
+  silent: boolean
 }
 
 // User type

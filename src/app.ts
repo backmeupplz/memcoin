@@ -11,6 +11,7 @@ import { setupToken } from './commands/token'
 import { setupTransfer } from './helpers/transfer'
 import { setupAPI } from './server'
 import { checkTime } from './helpers/middleware'
+import { setupSilent } from './commands/silent'
 
 // Setup the bot
 const bot: Telegraf<ContextMessageUpdate> = new telegraf(process.env.TOKEN, {
@@ -28,6 +29,7 @@ setupHelp(bot)
 setupLeaderboard(bot)
 setupBalance(bot)
 setupToken(bot)
+setupSilent(bot)
 
 // Setup transfer
 setupTransfer(bot)

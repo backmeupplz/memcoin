@@ -89,6 +89,11 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
     await transfer(sender, receiver, amount)
     // Get receiver info
     const receiverInfo = await getUserInfo(ctx.telegram, receiver)
+    // Check silent
+    const chat = await getUser(ctx.chat.id)
+    if (chat.silent) {
+      return
+    }
     // Reply
     const text = senderIsMinter
       ? `*${amount}* Лавкоинов было волшебным образом создано для *${
