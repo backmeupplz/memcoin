@@ -9,7 +9,7 @@ router.get('/:id', async (req, res) => {
     // Get id
     const { id } = req.params
     // Get user from db
-    const user = await getUser(id)
+    const user = await getUser(parseInt(id, 10))
     // Get user info with balance
     const info = await getUserInfo(req.telegram, user)
     // Respond with info
