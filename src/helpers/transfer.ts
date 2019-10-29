@@ -69,7 +69,9 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
     amount = (ctx.message.text.match(/\+/g) || []).length
     const heartAmount = contains(ctx.message.text, '<3')
     const emojiAmount = contains(ctx.message.text, '❤️')
-    amount = amount + heartAmount + emojiAmount
+    const bowlAmount = contains(ctx.message.text, '🥣')
+    
+    amount = amount + heartAmount + emojiAmount + bowlAmount
     // Check amount
     if (!amount) return
   } else {
