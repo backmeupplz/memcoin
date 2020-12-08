@@ -66,7 +66,7 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
     }
   } else if (ctx.message && ctx.message.text) {
     // Get number of coins to send
-    amount = (ctx.message.text.match(/\+/g) || []).length
+    amount = ctx.message.text.match(/^\+{1,}/g)?.[0].length ?? 0
     const heartAmount = contains(ctx.message.text, '<3')
     const emojiAmount = contains(ctx.message.text, '❤️')
     const bowlAmount = contains(ctx.message.text, '🥣')
