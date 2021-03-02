@@ -8,7 +8,7 @@ import { getName } from '../helpers/name'
 class User extends Typegoose {
   @prop({ required: true, index: true })
   chatId: number
-  @prop({ required: true, index: true, default: 100 })
+  @prop({ required: true, index: true, default: 0 })
   balance: number
   @prop()
   apiToken: string
