@@ -35,6 +35,19 @@ export async function transfer(sender: IUser, receiver: IUser, amount: number) {
   // Add balance to receiver
   receiver.balance += amount
   receiver = await receiver.save()
+  
+}
+
+export async function RemoveReceiverBalance(sender: IUser, receiver: IUser, amount: number, ctx: ContextMessageUpdate) {
+	// Check if sender is not the same as receiver
+	if (sender.chatId === receiver.chatId) throw new SendSelfError()
+	// Check if enough balance
+	if (receiver.balance < amount) throw new NotEnoughCoinsError()
+	// Remove balance from receiver if sender message == '-' || '🖤'
+	if (ctx.message == '-' || ctx.message == '🖤') {
+		receiver.balance -= amount
+		receiver = await receiver.save()
+	}
 }
 
 function isMinter(user: IUser) {
