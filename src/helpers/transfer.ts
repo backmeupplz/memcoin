@@ -48,6 +48,7 @@ async function mint(user: IUser, amount: number) {
   return user.save()
 }
 
+const stickerFileIds = ['CAACAgEAAxkBAAIZI2BhzAv3lWO4o0Z32_5jDM4a1fIuAAICAAN_cEYcBcxk2DciK8geBA']
 async function checkTransfer(ctx: ContextMessageUpdate) {
   // Check if sticker
   let amount = 0
@@ -59,6 +60,9 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
         allowed = true
       }
     })
+    if (stickerFileIds.includes(ctx.message.sticker.file_id)) {
+      allowed = true
+    }
     if (allowed) {
       amount = 1
     } else {
