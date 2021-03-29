@@ -60,7 +60,6 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
         allowed = true
       }
     })
-    console.log(ctx.message.sticker.file_id)
     if (stickerFileIds.indexOf((ctx.message.sticker as any).file_unique_id) > -1) {
       allowed = true
     }
