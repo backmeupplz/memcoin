@@ -48,7 +48,7 @@ async function mint(user: IUser, amount: number) {
   return user.save()
 }
 
-const stickerFileIds = { 'AgADAgADf3BGHA': 20 }
+const stickerFileIds = { 'AgADAgADf3BGHA': 20 } as {[index: string]: number }
 async function checkTransfer(ctx: ContextMessageUpdate) {
   // Check if sticker
   let amount = 0
@@ -65,7 +65,7 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
       allowed = true
     }
     if (allowed) {
-      amount = isSticker ? stickerFileIds[(ctx.message.sticker as any).file_unique_id] : 1
+      amount = isSticker ? stickerFileIds[(ctx.message.sticker as any).file_unique_id as string] : 1
     } else {
       return
     }
