@@ -48,7 +48,7 @@ async function mint(user: IUser, amount: number) {
   return user.save()
 }
 
-const stickerFileIds = { 'AgADAgADf3BGHA': 1 }
+const stickerFileIds = { 'AgADAgADf3BGHA': 20 }
 async function checkTransfer(ctx: ContextMessageUpdate) {
   // Check if sticker
   let amount = 0
