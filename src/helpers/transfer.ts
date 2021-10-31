@@ -93,7 +93,9 @@ async function checkTransfer(ctx: ContextMessageUpdate) {
       sender = await mint(sender, amount)
     }
     // Transfer coins
+    console.log('transferring')
     await transfer(sender, receiver, amount)
+    console.log('transferred')
     // Get receiver info
     const receiverInfo = await getUserInfo(ctx.telegram, receiver)
     // Check silent
