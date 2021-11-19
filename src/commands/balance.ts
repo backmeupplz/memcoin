@@ -14,4 +14,14 @@ export function setupBalance(bot: Telegraf<ContextMessageUpdate>) {
     // Reply
     ctx.replyWithMarkdown(text)
   })
+  bot.command('banance', async (ctx) => {
+    // Get user
+    const user = await getUser(ctx.from.id)
+    // Get chat user
+    const userInfo = await getUserInfo(ctx.telegram, user)
+    // Prepare text
+    const text = `Добрый день, *${userInfo.name}*! У вас *${userInfo.balance}* 🍌.`
+    // Reply
+    ctx.replyWithMarkdown(text)
+  })
 }
