@@ -50,7 +50,7 @@ export function setupLeaderboard(bot: Telegraf<ContextMessageUpdate>) {
       findIndex(members, 'isUndefined') > -1 ||
       findIndex(cardinalsMembers, 'isUndefined') > -1
     // Prepare text
-    let text = `❤️ Топ любимых ❤️\n\n${list}\n\n🔥 Топ Кардиналов Любви 🔥\n\n${cardinalsList}`
+    let text = `❤️ Топ любимых ❤️\n\n${list}\n\n🔥 Топ Кардиналов и Кардиналок Любви 🔥\n\n${cardinalsList}`
     // Add undefined description
     if (undefinedExist) {
       text = `${text}\n\n"Неопределенный товарищ" — это ограничения Телеграма, мы не смогли получить сейчас его данные. Однако ссылка на этого пользователя есть!`
