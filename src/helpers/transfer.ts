@@ -16,7 +16,7 @@ export class TransferError extends Error {
 export class NotEnoughCoinsError extends TransferError {
   type = 'NotEnoughCoinsError'
   message =
-    'Прошу прощения, но у пользователя недостаточно Лавкоинов для этого перевода'
+    'Прошу прощения, но у пользовательницы/пользователя недостаточно Лавкоинов для этого перевода'
 }
 
 export class SendSelfError extends TransferError {
