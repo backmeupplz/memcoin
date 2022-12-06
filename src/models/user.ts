@@ -101,7 +101,7 @@ export async function getUserInfo(
     // In case if it fails, return deleted user
     return {
       chatId: user.chatId,
-      name: `Неопределенный товарищ`,
+      name: `Неопределенная личность`,
       balance: user.balance,
       isUndefined: true,
     }
